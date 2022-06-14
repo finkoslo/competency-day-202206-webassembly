@@ -75,6 +75,7 @@
 
 
 		async mine(difficulty) {
+			let it = 0;
 			// Basically, it loops until our hash starts with
 			// the string 0...000 with length of <difficulty>.
 			while (!this.hash.startsWith(Array(difficulty + 1).join("0"))) {
@@ -86,9 +87,10 @@
 				} else {
 					this.hash = await getHash(this);
 				}
-
-
+				
+				it = it + 1;
 			}
+			console.log('Number of runs ', it)
 		}
 	}
 
