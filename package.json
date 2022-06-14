@@ -1,0 +1,22 @@
+{
+  "name": "competency-day-202206-webassembly",
+  "version": "1.0.0",
+  "description": "Web-assembly docs, snippets and examples from competency day 202206",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finkoslo/competency-day-202206-webassembly.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/finkoslo/competency-day-202206-webassembly/issues"
+  },
+  "homepage": "https://github.com/finkoslo/competency-day-202206-webassembly#readme",
+  "dependencies": {
+    "crypto": "^1.0.1"
+  }
+}
