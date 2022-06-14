@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/finkoslo/competency-day-202206-webassembly#readme",
   "dependencies": {
-    "crypto": "^1.0.1"
+    "crypto": "^1.0.1",
+    "hash-wasm": "^4.9.0"
   }
 }
