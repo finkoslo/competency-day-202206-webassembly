@@ -2,7 +2,7 @@
 
 
 
-	const difficulty = 5;
+	let difficulty = 5;
 
 	async function digestMessage(message) {
 		const encoder = new TextEncoder();
@@ -79,26 +79,34 @@
 		}
 	}
 
-	console.time( "Timing" )
+	window.doBlockChainTest = async function ( inDifficulty, callback ){
 
-	const initialBlock = new Block(Date.now().toString())
-	initialBlock.hash = await getHash(initialBlock)
-	const JeChain = new Blockchain(initialBlock);
+		difficulty = inDifficulty
+
+		console.time( "Timing" )
+
+		const initialBlock = new Block(Date.now().toString())
+		initialBlock.hash = await getHash(initialBlock)
+		const theChain = new Blockchain(initialBlock);
 
 // Add a new block
-	const block = new Block(Date.now().toString(), {from: "John", to: "Bob", amount: 100})
-	block.hash = await getHash(block);
-	console.debug( "javascript.js:87", block )
+		const block = new Block(Date.now().toString(), {from: "John", to: "Bob", amount: 100})
+		block.hash = await getHash(block);
+		console.debug( "javascript.js:87", block )
 
-	await JeChain.addBlock(block);
+		await theChain.addBlock(block);
 
 // (This is just a fun example, real cryptocurrencies often have some more steps to implement).
 
 // Prints out the updated chain
-	console.log(JeChain.chain);
-	console.debug( "javascript.js:97", "Difficulty:", difficulty )
-	console.debug( "javascript.js:97", JeChain.chain[1].timestamp - JeChain.chain[0].timestamp )
 
-	console.timeEnd( "Timing" )
+		console.log(theChain.chain);
+		console.debug( "javascript.js:97", "Difficulty:", difficulty )
+		console.debug( "javascript.js:97", theChain.chain[1].timestamp - theChain.chain[0].timestamp )
+
+		console.timeEnd( "Timing" )
+
+		callback( theChain )
+	}
 
 })()

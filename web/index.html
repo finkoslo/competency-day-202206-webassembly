@@ -2,10 +2,69 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+	<meta http-equiv="Expires" content="Thu, 01 Jan 1970 00:00:00 GMT" />
 	<title>Title</title>
+	<link rel="stylesheet" href="reset.css"/>
+	<link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-i
+<table>
+	<tr>
+		<td colspan="2">
+			<label>Select Hashing Difficulty
+				<select id="difficulty">
+					<option>1</option>
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+				</select></label>
+			<br/>
+			<br/>
+		</td>
+	</tr>
+	<tr>
+		<td style="vertical-align: top">
+			<button type="button" onclick="startJavaScriptBlockChain()">BEGIN JS BLOCKCHAIN CALCULATION</button>
+			<br/>
+			<br/>
+			<div id="js-result"></div>
+		</td>
+		<td style="vertical-align: top">
+			<button type="button" onclick="startWasmBlockChain()">BEGIN WASM BLOCKCHAIN CALCULATION</button>
+			<br/>
+			<br/>
+			<div id="wasm-result"></div>
+		</td>
+	</tr>
+</table>
 </body>
 <script type="text/javascript" src="javascript.js">//</script>
+<script type="text/javascript">
+	function startJavaScriptBlockChain(){
+		const difficulty = parseInt( document.getElementById("difficulty").value )
+		let startTime = new Date()
+		document.getElementById("js-result").innerHTML = 'Starting blockchain mining...'
+		setTimeout( function(){
+			doBlockChainTest( difficulty, function( res ){
+				let endTime = new Date()
+				document.getElementById("js-result").innerHTML = 'Completed mining ' + ( endTime.getTime() - startTime.getTime() )
+			} )
+		},100)
+	}
+
+	function startWasmBlockChain(){
+		const difficulty = parseInt( document.getElementById("difficulty").value )
+		let startTime = new Date()
+		document.getElementById("js-result").innerHTML = 'Starting blockchain mining...'
+		setTimeout( function(){
+			doBlockChainTest( difficulty, function( res ){
+				let endTime = new Date()
+				document.getElementById("js-result").innerHTML = 'Completed mining ' + ( endTime.getTime() - startTime.getTime() )
+			} )
+		},100)
+	}
+</script>
 </html>

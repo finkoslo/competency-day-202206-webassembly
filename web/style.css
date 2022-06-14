@@ -1,0 +1,48 @@
+body {
+	background: #af9;
+	height:100vh;
+	text-align: center;
+}
+
+body,
+button,
+select,
+input {
+	font-size:20px;
+}
+
+select {
+	-webkit-appearance: none;
+	min-width:20px;
+	border:none;
+	background:#09f;
+	color:#fff;
+	text-align: right;
+	padding: 5px 5px 5px 10px;
+}
+
+option {
+	padding: 5px 5px 5px 20px;
+	background:#09f;
+	color:#fff;
+	text-align: right;
+}
+
+button {
+	background:#09f;
+	color:#fff;
+	border-radius: 20px;
+	padding:40px;
+	border:0;
+}
+
+table {
+	position: absolute;
+	top: 50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+}
+
+td {
+	padding:20px;
+}
