@@ -1,6 +1,6 @@
 (async function () {
-
-let sha256 = new WasmSHA256();
+	let rightNow = Date.now().toString();
+	let sha256 = new WasmSHA256();
 
 	let difficulty = 5;
 
@@ -59,17 +59,18 @@ let sha256 = new WasmSHA256();
 
 	// Our hash function.
 	async function getHashWS(block) {
-		const hash = await sha256(block.prevHash + block.timestamp + JSON.stringify(block.data) + block.nonce);
+		const hash = await sha256.hashString(block.prevHash + block.timestamp + JSON.stringify(block.data) + block.nonce);
 		return hash
 	}
 
 	class Block {
-		constructor(timestamp = "", data = []) {
+		constructor(timestamp = "", data = [], mode = 'js' || 'ws') {
 			this.timestamp = timestamp;
 			this.data = data;
 			this.hash = ""
 			this.prevHash = ""; // previous block's hash
 			this.nonce = 0;
+			this.mode = mode
 		}
 
 
@@ -80,7 +81,13 @@ let sha256 = new WasmSHA256();
 				// We increases our nonce so that we can get a whole different hash.
 				this.nonce++;
 				// Update our new hash with the new nonce value.
-				this.hash = await getHash(this);
+				if (this.mode === 'ws') {
+					this.hash = await getHashWS(this);
+				} else {
+					this.hash = await getHash(this);
+				}
+
+
 			}
 		}
 	}
@@ -91,15 +98,14 @@ let sha256 = new WasmSHA256();
 
 		console.time("Timing")
 
-		const initialBlock = new Block(Date.now().toString())
+		const initialBlock = new Block(rightNow, null, 'js')
 		initialBlock.hash = await getHash(initialBlock)
 		const theChain = new Blockchain(initialBlock);
 
 		// Add a new block
-		const block = new Block(Date.now().toString(), { from: "John", to: "Bob", amount: 100 })
+		const block = new Block(rightNow, { from: "John", to: "Bob", amount: 100 }, 'js')
 		block.hash = await getHash(block);
 		console.debug("javascript.js:87", block)
-
 		await theChain.addBlock(block);
 
 		// (This is just a fun example, real cryptocurrencies often have some more steps to implement).
@@ -116,18 +122,18 @@ let sha256 = new WasmSHA256();
 	}
 
 	window.doBlockChainTestWS = async function (inDifficulty, callback) {
-		
+
 		difficulty = inDifficulty
 
 		console.time("Timing")
 
-		const initialBlock = new Block(Date.now().toString())
-		initialBlock.hash = sha256.hashString(initialBlock)
+		const initialBlock = new Block(rightNow, null, 'ws')
+		initialBlock.hash = await getHashWS(initialBlock)
 		const theChain = new Blockchain(initialBlock);
 
 		// Add a new block
-		const block = new Block(Date.now().toString(), { from: "John", to: "Bob", amount: 100 })
-		block.hash = sha256.hashString(block);
+		const block = new Block(rightNow, { from: "John", to: "Bob", amount: 100 }, 'ws')
+		block.hash = await getHashWS(block);
 		console.debug("javascript.js:131", block)
 
 		await theChain.addBlock(block);
@@ -146,13 +152,13 @@ let sha256 = new WasmSHA256();
 	}
 
 	fetch("sha256.wasm?v=1.0.2")
-    .then(res => res.arrayBuffer())
-    .then(buffer => {
-      sha256.loadWasmBuffer(buffer);
+		.then(res => res.arrayBuffer())
+		.then(buffer => {
+			sha256.loadWasmBuffer(buffer);
 
-      sha256.on("ready", function () {
-		console.log('wasm ready')
-	  });
-    });
+			sha256.on("ready", function () {
+				console.log('wasm ready ')
+			});
+		});
 })()
 
