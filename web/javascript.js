@@ -29,7 +29,12 @@
 
 		async addBlock(block) {
 			block.prevHash = this.getLastBlock().hash;
-			block.hash = await getHash(block);
+			if (block.mode === 'js') {
+				block.hash = await getHash(block);
+			} else {
+				block.hash = await getHashWS(block);
+			}
+
 			await block.mine(difficulty);
 			this.chain.push(Object.freeze(block));
 		}
@@ -87,7 +92,7 @@
 				} else {
 					this.hash = await getHash(this);
 				}
-				
+
 				it = it + 1;
 			}
 			console.log('Number of runs ', it)
